@@ -21,11 +21,7 @@ def read(key):
           value = json.loads(string)
           print(value)
         else:
-          del d[key]
-          with open('./DataBase/key_data.json', 'w') as f:
-            json.dump(d, f)# Re-writting changes back to Data file
-          f.close()
-          print("ERROR: TTL Of The",key,"Has Expired") 
+          print("ERROR: TTL Of The",key,"Has Expired")
       else:
         string =str(key)+":"+str(value[0])
         print(string)

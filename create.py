@@ -7,12 +7,14 @@ lock = threading.Lock()
 d = data.make_file()
 
 def validate(key, value):
-    if key.isalpha():
+    if key.isalpha() and len(key)<=32:
         if sys.getsizeof(value) <= (16*1024):
             return True
         else:
+            print("ERROR: Size Of Value Is More Than 16KB")
             return False
     else:
+        print("ERROR: Length Of The String Should Be Less Than 32 Char")
         return False
 
 def validateJSON(jsonData):
@@ -43,21 +45,21 @@ def create(key, value, timeout=0):
                 l = [value , timeout]
             else:
                 l = [value, (time.time() + timeout)]
-            if len(key) <= 32:
-              if validateJSON(value):
-                d[key] = l
-                print("Key Added Succesfully")
-                with open('./DataBase/key_data.json', 'w') as f:
-                  json.dump(d, f)
-                f.close()
-              else:
-                print("ERROR: Value Is Not An Valid Json Object")
+            if validateJSON(value):
+              d[key] = l
+              print("Key Added Succesfully")
+              with open('./DataBase/key_data.json', 'w') as f:
+                json.dump(d, f)
+              f.close()
             else:
-              print("ERROR: Length Of The String Should Be Less Than 32 Char")
+              print("ERROR: Value Is Not An Valid Json Object")
+            #else:
+            #  print("ERROR: Length Of The String Should Be Less Than 32 Char")
         else:
-            print("ERROR: Memory limit exceeded!! ")
+            print("ERROR: Memory limit exceeded")
     else:
         print(
             "ERROR: Key Must Be A String"
         )
     lock.release()
+

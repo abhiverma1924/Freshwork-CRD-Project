@@ -1,7 +1,11 @@
 import json
 import time
+import threading
+lock = threading.Lock()
 
 def read(key):
+  lock.acquire()
+  time.sleep(5)
   file = open('./DataBase/key_data.json',) 
   d = json.load(file) 
   if key not in d:
@@ -10,11 +14,12 @@ def read(key):
       value = d[key]
       if value[1]!=0:
         if time.time()<value[1]:
-          stri=str(key)+":"+str(value[0])
-          value = json.loads(stri)
-          return value
+          string=str(key)+":"+str(value[0])
+          value = json.loads(string)
+          print(value)
         else:
           print("ERROR: TTL Of The ",key,"Has Expired") 
       else:
-        stri=str(key)+":"+str(value[0])
-        return stri
+        string =str(key)+":"+str(value[0])
+        print(string)
+  lock.release()

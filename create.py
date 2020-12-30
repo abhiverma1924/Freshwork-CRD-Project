@@ -2,7 +2,8 @@ import time
 import json
 import data
 import sys
-
+import threading
+lock = threading.Lock()
 d = data.make_file()
 
 def validate(key, value):
@@ -30,6 +31,8 @@ def convert2Json(value):
 
 
 def create(key, value, timeout=0):
+    lock.acquire()
+    #time.sleep(5)
     value = convert2Json(value)
     if validate(key,value)== True:
       if key in d:
@@ -39,7 +42,7 @@ def create(key, value, timeout=0):
             if timeout == 0:
                 l = [value , timeout]
             else:
-                l = [value, time.time() + timeout]
+                l = [value, (time.time() + timeout)/10000000]
             if len(key) <= 32:
               if validateJSON(value):
                 d[key] = l
@@ -55,3 +58,4 @@ def create(key, value, timeout=0):
         print(
             "ERROR: Key Must Be A String"
         )
+    lock.release()

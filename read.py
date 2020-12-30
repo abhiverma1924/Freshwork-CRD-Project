@@ -18,8 +18,13 @@ def read(key):
           value = json.loads(string)
           print(value)
         else:
-          print("ERROR: TTL Of The ",key,"Has Expired") 
+          del d[key]
+          with open('./DataBase/key_data.json', 'w') as f:
+            json.dump(d, f)
+          f.close()
+          print("ERROR: TTL Of The",key,"Has Expired") 
       else:
         string =str(key)+":"+str(value[0])
         print(string)
   lock.release()
+

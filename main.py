@@ -11,8 +11,8 @@ if __name__ == "__main__":
   threads = list()
   i = -1
   while(i!=1):
-    data_created = threading.Thread(target=cr.create, args=('hemaaaaaaa',{"nikhil": 2,"akash": 5, "manjeet": 10, "akshat": 15}, 0,))
-    data_read = threading.Thread(target=r.read, args= ('hema',))
+    data_created = threading.Thread(target=cr.create, args=('Maths',{"nikhil": "8","akash": 5, "manjeet": 10, "akshat": 15}, 0,))
+    data_read = threading.Thread(target=r.read, args= ('he',))
     data_delete = threading.Thread(target=dl.delete, args= ('Abhi',))
     threads.append(data_created)
     threads.append(data_read)

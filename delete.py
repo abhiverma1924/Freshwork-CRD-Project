@@ -16,7 +16,11 @@ def delete(key):
                 del d[key]
                 print("Key Successfully Deleted")
             else:
-                print("ERROR: TTL Of The",key,"Has Expired") 
+              del d[key]
+              with open('./DataBase/key_data.json', 'w') as f:
+                json.dump(d, f)
+              f.close()
+              print("ERROR: TTL Of The",key,"Has Expired") 
         else:
             del d[key]
             with open('./DataBase/key_data.json', 'w') as f:

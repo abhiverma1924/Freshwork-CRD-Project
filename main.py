@@ -1,9 +1,10 @@
 import create as cr
 #import data as d
+import read as r
+#import delete as dl 
+import json
 
-cr.create('Abhi',10,0)
-cr.create('Ris',10,0)
-cr.create('Rahul',10,0)
-cr.create('Kiran',{0, 'Abhi', 76.90},0)
-
-#d.make()
+cr.create('NehaCOOL', {'nikhil': 1, 'akash' : 5, 'manjeet' : 10, 'akshat' : 15}, 0)
+str = r.read('Abhinav')
+print(str)
+print(type(str))

@@ -4,7 +4,7 @@ import threading
 lock = threading.Lock()
 def delete(key):
     lock.acquire()
-    time.sleep(5)
+    #time.sleep(5)
     file = open('./DataBase/key_data.json',) 
     d = json.load(file) 
     if key not in d:

@@ -2,13 +2,16 @@ import time
 import json
 import data
 import sys
+
 import threading
 lock = threading.Lock()
+
 d = data.make_file()
+#file is loaded from the local storage and store in the dictionary
 
 def validate(key, value):
-    if key.isalpha() and len(key)<=32:
-        if sys.getsizeof(value) <= (16*1024):
+    if key.isalpha() and len(key)<=32:# To ensure key is a string and has <= 32 char
+        if sys.getsizeof(value) <= (16*1024):# To ensure the size of Value <= 16KB
             return True
         else:
             print("ERROR: Size Of Value Is More Than 16KB")
@@ -33,33 +36,32 @@ def convert2Json(value):
 
 
 def create(key, value, timeout=0):
-    lock.acquire()
+    lock.acquire() # To ensure no other operation can use data file at the same time
     #time.sleep(5)
-    value = convert2Json(value)
-    if validate(key,value)== True:
-      if key in d:
+    # To experience threading Uncomment sleep statement
+    value = convert2Json(value) # To convert value into Json Object
+    if validate(key,value)== True: # Validating Key & value against tetscases
+      if key in d: # check if key Already exist
         print("ERROR: This Key Already Exist")
       else:
-        if len(d) < (1024 * 1024 * 1024):
+        if sys.getsizeof(d)< (1024 * 1024 * 1024): # to ensure the size of the <= 1GB
             if timeout == 0:
                 l = [value , timeout]
             else:
                 l = [value, (time.time() + timeout)]
-            if validateJSON(value):
+            if validateJSON(value): # checking the json object is valid or not
               d[key] = l
               print("Key Added Succesfully")
               with open('./DataBase/key_data.json', 'w') as f:
-                json.dump(d, f)
+                json.dump(d, f) # Re-writting changes back to Data file 
               f.close()
             else:
               print("ERROR: Value Is Not An Valid Json Object")
-            #else:
-            #  print("ERROR: Length Of The String Should Be Less Than 32 Char")
         else:
             print("ERROR: Memory limit exceeded")
     else:
         print(
             "ERROR: Key Must Be A String"
         )
-    lock.release()
+    lock.release() # releasing lock
 
